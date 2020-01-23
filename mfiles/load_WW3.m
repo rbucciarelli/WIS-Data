@@ -8,9 +8,9 @@
 clear all;
 
 %% Initialize variables
-cdip_id = '067';
-start_time = '200901';      % YYYYMM
-end_time = '200901';
+cdip_id = '106';
+start_time = '200502';      % YYYYMM
+end_time = '201306';
 
 %- Find ndbc_id using table: ../ndbc_id_table.csv
 M = csvread('../ndbc_id_table.csv');
@@ -20,7 +20,8 @@ ndbc_id = num2str(M(index,2));       %'46219';
 %- WW3 files are by month, create an array of dates
 date_list = get_dates(start_time,end_time); 
 
-data_dir = ['../WW3/data/',ndbc_id,'/'];
+ww3_dir = '\\d.cdip.ucsd.edu\data09_01\WW3\data\multi_1\';
+data_dir = [ww3_dir,ndbc_id,'\'];
 
 file_info = dir([data_dir,'*SPEC*']);
 data_WW3 = {};
@@ -30,6 +31,7 @@ si = 1;     %- start_index
 for i = 1:length(date_list)
     fdate = date_list(i);
     fname = ['multi_1.',ndbc_id,'.','HIND_SPEC.',num2str(fdate)];
+    disp(['--> ' fname]);
     if (exist([data_dir,fname],'file'))
         data = ww3_to_wnc([data_dir,fname]);
     end

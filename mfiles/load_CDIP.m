@@ -5,16 +5,27 @@
 %- Files are stored as individual months in specific regions.
 %-------------------------------------------------------------------------
 
-clear all;
+function [data] = load_CDIP(cdip_id,start_time,end_time);
+%- Find ndbc_id using table: ../ndbc_id_table.csv
+% stn_info = csvread('../cdip-westcoast.csv');
+% cdip_list = num2str(stn_info(:,1),'%03g');
+% 
+% for i = 1:2%length(cdip_list)
+%     cdip_id = cdip_list(i,1:3);
+%     start_date = num2str(stn_info(i,3));                % YYYYMM
+%     end_date = '201312';
+%     data = {};
+%     disp(['Processing CDIP ' cdip_id ' ---> ' start_date '-' end_date]);
+%     data = load_CDIP(cdip_id,start_date,end_date);
+% 
+% %clear all;
 
 data = {};
 
 %% Initialize variables
-%url = 'https://data.nodc.noaa.gov/thredds/catalog/ncep/nww3/catalog.html';
-region = 'Pacific';         %- Need to figure out which region buoy is in.
-cdip_id = '067';
-start_time = '200901';      % YYYYMM
-end_time = '201012';
+% cdip_id = '132';
+% start_time = '200602';      % YYYYMM
+% end_time = '201312';
 
 %- Find ndbc_id using table: ../ndbc_id_table.csv
 M = csvread('../ndbc_id_table.csv');
@@ -29,11 +40,6 @@ var_list = {'waveTime', 'waveFrequency', 'waveEnergyDensity', ...
     'waveBandwidth', 'waveA1Value', 'waveB1Value', 'waveA2Value', ...
     'waveB2Value', 'waveHs', 'waveTp', 'waveDp', 'waveTa', ...
     'metaStationLatitude', 'metaStationLongitude', 'metaWaterDepth'};
-
-%% Call function to load data from USACE Thredds server
-% [data_CDIP] = load_cdip_data(cdip_id, start_time,end_time);
-% eval(['C' cdip_id '=data_CDIP;']);                            %- W067
-% 
 
 
 %% Load CDIP data from THREDDS Server
@@ -85,6 +91,8 @@ eval(['C' cdip_id '=data;']);
 out_dir = '../data/';
 savefile = ['C',cdip_id,'.mat'];
 save([out_dir savefile],['C' cdip_id])
+
+end
 
 %% Function to correct time epoch from Allie H cdipxww3 
 function [ mat_time ] = time_correct(ts)
