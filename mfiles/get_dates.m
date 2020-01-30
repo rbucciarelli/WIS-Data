@@ -11,8 +11,7 @@ function [ dates ] = get_dates(start_time,end_time)
     for i = 1:length(years)
         yyyy = num2str(years(i),'%04i');
         if (yyyy == syear)
-            %months = str2num(smonth):str2num(emonth);
-            months = str2num(smonth):12;
+            months = str2num(smonth):str2num(emonth);
         elseif (yyyy == eyear)
             months = 1:str2num(emonth);
         else
